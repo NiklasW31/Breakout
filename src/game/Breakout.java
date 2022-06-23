@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.event.KeyEvent;
 import java.io.IOException;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
@@ -11,7 +10,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.TerminalFactory;
 
-public class Game {
+public class Breakout {
 
 	public enum Richtung {
 		Rechts, Links, Unten, Oben
@@ -190,18 +189,18 @@ public class Game {
 
 		// Startseite mit Text
 		// der Text wird hier direkt in das Terminal geschrieben und ncht in das Spielfeld
-		terminal.setCursorPosition(6, 6);	
-		Write("███╗   ███╗██╗   ██╗     ██████╗  █████╗ ███╗   ███╗███████╗", terminal);
+		terminal.setCursorPosition(6, 6);
+		Write(" ______     ______     ______     ______     __  __     ______     __  __     ______  ", terminal);
 		terminal.setCursorPosition(6, 7);
-		Write("████╗ ████║╚██╗ ██╔╝    ██╔════╝ ██╔══██╗████╗ ████║██╔════╝", terminal);
+		Write("/\\  == \\   /\\  == \\   /\\  ___\\   /\\  __ \\   /\\ \\/ /    /\\  __ \\   /\\ \\/\\ \\   /\\__  _\\ ", terminal);
 		terminal.setCursorPosition(6, 8);
-		Write("██╔████╔██║ ╚████╔╝     ██║  ███╗███████║██╔████╔██║█████╗  ", terminal);
+		Write("\\ \\  __<   \\ \\  __<   \\ \\  __\\   \\ \\  __ \\  \\ \\  _\"-.  \\ \\ \\/\\ \\  \\ \\ \\_\\ \\  \\/_/\\ \\/ ", terminal);
 		terminal.setCursorPosition(6, 9);
-		Write("██║╚██╔╝██║  ╚██╔╝      ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝  ", terminal);
+		Write(" \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_____\\    \\ \\_\\ ", terminal);
 		terminal.setCursorPosition(6, 10);
-		Write("██║ ╚═╝ ██║   ██║       ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗", terminal);
+		Write("  \\/_____/   \\/_/ /_/   \\/_____/   \\/_/\\/_/   \\/_/\\/_/   \\/_____/   \\/_____/     \\/_/ ", terminal);
 		terminal.setCursorPosition(6, 11);
-		Write("╚═╝     ╚═╝   ╚═╝        ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝", terminal);
+		Write("                                                                                      ", terminal);
 
 		// Cursor auf Position bewegen
 		terminal.setCursorPosition(6, 14);
