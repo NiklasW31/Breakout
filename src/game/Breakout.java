@@ -10,6 +10,8 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.TerminalFactory;
 
+import static game.Player.gety;
+
 public class Breakout {
 
 	public enum Richtung {
@@ -64,10 +66,16 @@ public class Breakout {
 		// Startfarbe
 		int r = 3, g = 33, b = 66;
 
+		Player player = new Player();
+		Ball ball = new Ball();
+
 		// Spiel in "Dauerschleife" (game loop)
 		while (true) {
 
 			ClearSpielfeld();
+			draw();
+			moveBall();
+			collisionBall();
 
 			// Hintergrundfarbe mit RGB (ACHTUNG 6x6x6 Color Cube)
 			// siehe TextColor Klasse in Lanterna
@@ -111,53 +119,28 @@ public class Breakout {
 				// wenn die linke Pfeiltaste gedrückt wird
 				if (eingabe.getKeyType().equals(KeyType.ArrowLeft)) {
 					// kann nicht in entgegen gesetzte Richtung laufen (z.B. Snake)
-					if (richtung != Richtung.Rechts) {
+
 						richtung = Richtung.Links;
 						
 						// wenn der Spielfeld verlassen wird, dann ...
-						if (posX <= 1) {
-							posX = spielfeldBreite - 1;
-						} else {
-							posX -= 2;
+						if (Player.x > 2) {
+							Player.x --;
 						}
-					}
+
+
+
 				}
 
 				// wenn die rechte Pfeiltaste gedrückt wird
 				if (eingabe.getKeyType().equals(KeyType.ArrowRight)) {
-					if (richtung != Richtung.Links) {
+
 						richtung = Richtung.Rechts;
-						if (posX >= spielfeldBreite - 2) {
-							posX = 0;
-						} else {
-							posX += 2;
+						if (Player.x + Player.groese < spielfeldBreite - 2) {
+							Player.x ++;
 						}
-					}
+
 				}
 
-				// wenn die Pfeil nach oben Taste gedrückt wird
-				if (eingabe.getKeyType().equals(KeyType.ArrowUp)) {
-					if (richtung != Richtung.Unten) {
-						richtung = Richtung.Oben;
-						if (posY <= 0) {
-							posY = spielfeldHoehe - 1;
-						} else {
-							posY -= 1;
-						}
-					}
-				}
-
-				// wenn die Pfeil nach unten Taste gedrückt wird
-				if (eingabe.getKeyType().equals(KeyType.ArrowDown)) {
-					if (richtung != Richtung.Oben) {
-						richtung = Richtung.Unten;
-						if (posY >= spielfeldHoehe - 1) {
-							posY = 0;
-						} else {
-							posY += 1;
-						}
-					}
-				}
 
 				// wenn ESC Taste gedrückt wird
 				if (eingabe.getKeyType().equals(KeyType.Escape)) {
@@ -168,8 +151,7 @@ public class Breakout {
 				}
 			}
 
-			// Zeichen setzen
-			spielfeld[posX][posY].Text = '\u058E';
+
 
 			try {
 				// zeichnet das gesamte Spielfeld auf einmal
@@ -273,6 +255,51 @@ public class Breakout {
 			}
 		}
 	}
-	//hallo ^^
+
+	public static void draw(){
+
+		//zeichnet Spieler
+		for(int i = 0; i < Player.groese; i++){
+			spielfeld[Player.x + i][Player.y].backColor = Indexed.fromRGB(144, 44, 22);
+		}
+		spielfeld[Ball.stuezVektorX][Ball.stuezVektorY].Text = '\u058E';
+
+	}
+	public static void moveBall(){
+
+		// wenn ball senkrecht nach unten gehen soll
+		if(Ball.richtungsVektorX == 0 && Ball.richtungsVektorY == -1){
+
+			Ball.stuezVektorY ++;
+		}
+
+
+		//wenn ball senkrecht nach oben gehen soll
+		if(Ball.richtungsVektorX == 0 && Ball.richtungsVektorY == 1){
+			Ball.stuezVektorY--;
+		}
+
+	}
+
+	public static void collisionBall(){
+
+		//wenn der ball und der Spieler auf der Y Achse auf der selbenstufe sind
+		if(Player.y - 1 == Ball.stuezVektorY){
+
+			//jeder wert vom Spieler wird mit dem Ball abgeglichen
+			for(int i = 0; i < Player.groese; i++){
+
+				//wenn ein wert übereinstimmt
+				if(Player.x + i == Ball.stuezVektorX){
+
+					//richtung des balles wird verändert
+					Ball.richtungsVektorY = 1;
+				}
+			}
+		}
+	}
+
+
+
 
 }
