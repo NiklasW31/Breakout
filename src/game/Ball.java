@@ -1,19 +1,21 @@
 package game;
 
+
 public class Ball {
 
 
     public static Richtung richtung;
 
-    public static enum Richtung {oben, unten, rechtsOben, }
+    public static enum Richtung {oben, unten,}
+
     public static int geschwindigkeit;
-    public static int richtungsVektorX;
-    public static int richtungsVektorY;
-    public static int stuezVektorX;
-    public static int stuezVektorY;
+    public static double richtungsVektorX;
+    public static double richtungsVektorY;
+    public static double stuezVektorX;
+    public static double stuezVektorY;
 
     Ball(){
-        stuezVektorX = 46;
+        stuezVektorX = 50;
         stuezVektorY = 20;
         richtungsVektorX = 0;
         richtungsVektorY = 0;

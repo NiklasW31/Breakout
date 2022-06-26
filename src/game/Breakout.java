@@ -78,6 +78,8 @@ public class Breakout {
 			collisionBall();
 			collisionBoarder();
 			spielfeld[42][41].backColor = Indexed.fromRGB(144, 44, 22);
+			terminal.setCursorPosition(6, 14);
+			Write("dddddddddd ", terminal);
 
 			// Hintergrundfarbe mit RGB (ACHTUNG 6x6x6 Color Cube)
 			// siehe TextColor Klasse in Lanterna
@@ -266,50 +268,31 @@ public class Breakout {
 		}
 
 		//Zeichet Ball
-		spielfeld[Ball.stuezVektorX][Ball.stuezVektorY].Text = '\u058E';
+		spielfeld[(int)Ball.stuezVektorX][(int)Ball.stuezVektorY].Text = '\u058E';
 
 	}
 	public static void moveBall(){
 
-		// wenn ball senkrecht nach unten gehen soll
-		if(Ball.richtungsVektorX == 0 && Ball.richtungsVektorY == 0 && Ball.richtung == Ball.Richtung.unten ){
 
-			Ball.stuezVektorY ++;
-		}
-		//wenn ball senkrecht nach oben gehen soll
-		if(Ball.richtungsVektorX == 0 && Ball.richtungsVektorY == 0 && Ball.richtung == Ball.Richtung.oben){
+		//bewegt den Ball nach oben
+		if(Ball.richtung == Ball.Richtung.oben){
+			Ball.stuezVektorX += Ball.richtungsVektorX;
+			Ball.stuezVektorY -= Ball.richtungsVektorY;
 			Ball.stuezVektorY--;
 		}
 
-
-
-		if(Ball.richtungsVektorX == -1 && Ball.richtungsVektorY == 1 && Ball.richtung == Ball.Richtung.unten){
+		//bewegt den Ball nach unten
+		if(Ball.richtung == Ball.Richtung.unten){
+			Ball.stuezVektorX += Ball.richtungsVektorX;
+			Ball.stuezVektorY += Ball.richtungsVektorY;
 			Ball.stuezVektorY++;
-			Ball.stuezVektorX++;
 		}
-
-
-		if(Ball.richtungsVektorX == -1 && Ball.richtungsVektorY == 1 && Ball.richtung == Ball.Richtung.oben){
-			Ball.stuezVektorY--;
-			Ball.stuezVektorX--;
-		}
-
-		if(Ball.richtungsVektorX == 1 && Ball.richtungsVektorY == 1 && Ball.richtung == Ball.Richtung.oben){
-			Ball.stuezVektorY--;
-			Ball.stuezVektorX++;
-		}
-
-		if(Ball.richtungsVektorX == 1 && Ball.richtungsVektorY == 1 && Ball.richtung == Ball.Richtung.unten){
-			Ball.stuezVektorY++;
-			Ball.stuezVektorX--;
-		}
-
 	}
 
 	public static void collisionBall(){
 
 		//wenn der ball und der Spieler auf der Y Achse auf der selbenstufe sind
-		if(Player.y - 1 == Ball.stuezVektorY){
+		if(Player.y -1  == Ball.stuezVektorY){
 
 			//jeder wert vom Spieler wird mit dem Ball abgeglichen
 			for(int i = 0; i < Player.groese; i++){
@@ -319,19 +302,26 @@ public class Breakout {
 
 					Ball.richtung = Ball.Richtung.oben;
 
-					if( i < 5){
-						Ball.richtungsVektorX = -1;
-						Ball.richtungsVektorY = 1;
-					}
-					if(i >7 ){
-						Ball.richtungsVektorX = 1;
-						Ball.richtungsVektorY = 1;
-					}
-					if(i > 4 && i < 8){
-						Ball.richtungsVektorX = 0;
-						Ball.richtungsVektorY = 0;
+
+					//wenn ball auf die Linke seite vom Spieler trifft
+					if(i <= Player.groese / 3){
+
+						Ball.richtungsVektorX --;
+
 					}
 
+					//wenn Ball in die Mitte vom spieler trifft
+					if(i >= Player.groese / 3 && i <= Player.groese / 2){
+
+
+					}
+
+					//wenn Ball auf die rechte Seite vom Spieler trifft
+					if(i >= Player.groese / 2){
+
+						Ball.richtungsVektorX ++;
+
+					}
 				}
 			}
 		}
@@ -339,39 +329,22 @@ public class Breakout {
 
 	public static void collisionBoarder(){
 
-		//wenn obere Boarder berührt wird
 		if(Ball.stuezVektorY == 1){
-
 			Ball.richtung = Ball.Richtung.unten;
-
-			if(Ball.richtungsVektorX == 1 && Ball.richtungsVektorY == 1){
-				Ball.richtungsVektorX = -1;
-				Ball.richtungsVektorY = 1;
-			} else if (Ball.richtungsVektorX == -1 && Ball.richtungsVektorY == 1){
-				Ball.richtungsVektorX = 1;
-				Ball.richtungsVektorY = 1;
-			}
 		}
 
-		//wenn rechte oder Linke boarder berührt wird
-		if(Ball.richtung == Ball.Richtung.unten){
-			if(Ball.stuezVektorX == 2){
-				Ball.richtungsVektorX = -1;
-				Ball.richtungsVektorY = 1;
-			}
-			if(Ball.stuezVektorX == spielfeldBreite - 2){
-				Ball.richtungsVektorX = 1;
-				Ball.richtungsVektorY = 1;
-			}
-		}else{
-			if(Ball.stuezVektorX == 2){
-				Ball.richtungsVektorX = 1;
-				Ball.richtungsVektorY = 1;
-			}
-			if(Ball.stuezVektorX == spielfeldBreite - 2){
-				Ball.richtungsVektorX = -1;
-				Ball.richtungsVektorY = 1;
-			}
+		if(Ball.stuezVektorX == 1){
+			richtungAendernSeite();
+		}
+		if(Ball.stuezVektorX == spielfeldBreite - 2){
+			richtungAendernSeite();
 		}
 	}
+
+
+	public static void richtungAendernSeite(){
+		Ball.richtungsVektorX = Ball.richtungsVektorX * -1;
+	}
+
+
 }
