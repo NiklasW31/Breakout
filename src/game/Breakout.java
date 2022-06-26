@@ -14,9 +14,9 @@ import static game.Player.gety;
 
 public class Breakout {
 
-	public enum Richtung {
-		Rechts, Links, Unten, Oben
-	}
+	//public enum Richtung {
+		//Rechts, Links, Unten, Oben
+	//}
 
 	public static int spielfeldHoehe = 50;
 	public static int spielfeldBreite = 100;
@@ -48,7 +48,7 @@ public class Breakout {
 			showStartseite(terminal);
 
 			// "Game-loop" wird hier ausgeführt
-			double geschwindigkeit = 50;
+			double geschwindigkeit = 30;
 			runGame(geschwindigkeit, terminal);
 			
 			// GAME OVER  hier hinzufügen
@@ -59,7 +59,7 @@ public class Breakout {
 	private static void runGame(double geschwindigkeit, Terminal terminal) throws IOException {
 
 		// initiale Spieleinstellungen
-		Richtung richtung = Richtung.Rechts;
+		//Richtung richtung = Richtung.Rechts;
 		int posX = spielfeldBreite / 2;
 		int posY = spielfeldHoehe / 2;
 
@@ -76,6 +76,8 @@ public class Breakout {
 			draw();
 			moveBall();
 			collisionBall();
+			collisionBoarder();
+			spielfeld[42][41].backColor = Indexed.fromRGB(144, 44, 22);
 
 			// Hintergrundfarbe mit RGB (ACHTUNG 6x6x6 Color Cube)
 			// siehe TextColor Klasse in Lanterna
@@ -120,7 +122,7 @@ public class Breakout {
 				if (eingabe.getKeyType().equals(KeyType.ArrowLeft)) {
 					// kann nicht in entgegen gesetzte Richtung laufen (z.B. Snake)
 
-						richtung = Richtung.Links;
+
 						
 						// wenn der Spielfeld verlassen wird, dann ...
 						if (Player.x > 2) {
@@ -134,7 +136,7 @@ public class Breakout {
 				// wenn die rechte Pfeiltaste gedrückt wird
 				if (eingabe.getKeyType().equals(KeyType.ArrowRight)) {
 
-						richtung = Richtung.Rechts;
+
 						if (Player.x + Player.groese < spielfeldBreite - 2) {
 							Player.x ++;
 						}
@@ -262,21 +264,44 @@ public class Breakout {
 		for(int i = 0; i < Player.groese; i++){
 			spielfeld[Player.x + i][Player.y].backColor = Indexed.fromRGB(144, 44, 22);
 		}
+
+		//Zeichet Ball
 		spielfeld[Ball.stuezVektorX][Ball.stuezVektorY].Text = '\u058E';
 
 	}
 	public static void moveBall(){
 
 		// wenn ball senkrecht nach unten gehen soll
-		if(Ball.richtungsVektorX == 0 && Ball.richtungsVektorY == -1){
+		if(Ball.richtungsVektorX == 0 && Ball.richtungsVektorY == 0 && Ball.richtung == Ball.Richtung.unten ){
 
 			Ball.stuezVektorY ++;
 		}
-
-
 		//wenn ball senkrecht nach oben gehen soll
-		if(Ball.richtungsVektorX == 0 && Ball.richtungsVektorY == 1){
+		if(Ball.richtungsVektorX == 0 && Ball.richtungsVektorY == 0 && Ball.richtung == Ball.Richtung.oben){
 			Ball.stuezVektorY--;
+		}
+
+
+
+		if(Ball.richtungsVektorX == -1 && Ball.richtungsVektorY == 1 && Ball.richtung == Ball.Richtung.unten){
+			Ball.stuezVektorY++;
+			Ball.stuezVektorX++;
+		}
+
+
+		if(Ball.richtungsVektorX == -1 && Ball.richtungsVektorY == 1 && Ball.richtung == Ball.Richtung.oben){
+			Ball.stuezVektorY--;
+			Ball.stuezVektorX--;
+		}
+
+		if(Ball.richtungsVektorX == 1 && Ball.richtungsVektorY == 1 && Ball.richtung == Ball.Richtung.oben){
+			Ball.stuezVektorY--;
+			Ball.stuezVektorX++;
+		}
+
+		if(Ball.richtungsVektorX == 1 && Ball.richtungsVektorY == 1 && Ball.richtung == Ball.Richtung.unten){
+			Ball.stuezVektorY++;
+			Ball.stuezVektorX--;
 		}
 
 	}
@@ -292,14 +317,61 @@ public class Breakout {
 				//wenn ein wert übereinstimmt
 				if(Player.x + i == Ball.stuezVektorX){
 
-					//richtung des balles wird verändert
-					Ball.richtungsVektorY = 1;
+					Ball.richtung = Ball.Richtung.oben;
+
+					if( i < 5){
+						Ball.richtungsVektorX = -1;
+						Ball.richtungsVektorY = 1;
+					}
+					if(i >7 ){
+						Ball.richtungsVektorX = 1;
+						Ball.richtungsVektorY = 1;
+					}
+					if(i > 4 && i < 8){
+						Ball.richtungsVektorX = 0;
+						Ball.richtungsVektorY = 0;
+					}
+
 				}
 			}
 		}
 	}
 
+	public static void collisionBoarder(){
 
+		//wenn obere Boarder berührt wird
+		if(Ball.stuezVektorY == 1){
 
+			Ball.richtung = Ball.Richtung.unten;
 
+			if(Ball.richtungsVektorX == 1 && Ball.richtungsVektorY == 1){
+				Ball.richtungsVektorX = -1;
+				Ball.richtungsVektorY = 1;
+			} else if (Ball.richtungsVektorX == -1 && Ball.richtungsVektorY == 1){
+				Ball.richtungsVektorX = 1;
+				Ball.richtungsVektorY = 1;
+			}
+		}
+
+		//wenn rechte oder Linke boarder berührt wird
+		if(Ball.richtung == Ball.Richtung.unten){
+			if(Ball.stuezVektorX == 2){
+				Ball.richtungsVektorX = -1;
+				Ball.richtungsVektorY = 1;
+			}
+			if(Ball.stuezVektorX == spielfeldBreite - 2){
+				Ball.richtungsVektorX = 1;
+				Ball.richtungsVektorY = 1;
+			}
+		}else{
+			if(Ball.stuezVektorX == 2){
+				Ball.richtungsVektorX = 1;
+				Ball.richtungsVektorY = 1;
+			}
+			if(Ball.stuezVektorX == spielfeldBreite - 2){
+				Ball.richtungsVektorX = -1;
+				Ball.richtungsVektorY = 1;
+			}
+		}
+	}
 }

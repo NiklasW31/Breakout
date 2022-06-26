@@ -10,7 +10,7 @@ public class Player extends Breakout{
         x = 42;
         y = 42;
         leben = 3;
-        groese = 11;
+        groese = 12;
     }
     public static int gety(){
         return y;
