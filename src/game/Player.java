@@ -5,12 +5,14 @@ public class Player extends Breakout{
     static public int y;
     static public int leben;
     static public int groese;
+    static public int highscore;
 
     Player(){
         x = 45;
         y = 42;
         leben = 3;
         groese = 12;
+        highscore = 1900;
     }
     public static int gety(){
         return y;

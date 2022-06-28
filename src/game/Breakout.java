@@ -1,6 +1,10 @@
 package game;
 
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.concurrent.BlockingDeque;
+
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.TextColor.Indexed;
@@ -14,15 +18,14 @@ import static game.Player.gety;
 
 public class Breakout {
 
-	//public enum Richtung {
-		//Rechts, Links, Unten, Oben
-	//}
-
 	public static int spielfeldHoehe = 50;
 	public static int spielfeldBreite = 100;
 	public static Pixel[][] spielfeld;
 	public static TextColor DefaultBackColor = TextColor.ANSI.BLACK;
 	public static TextColor DefaultTextColor = TextColor.ANSI.WHITE;
+	public static boolean gamesOn = true;
+	public static KeyType level;
+	public static Block[] blocks;
 
 	public static void main(String[] args) throws IOException {
 
@@ -43,6 +46,7 @@ public class Breakout {
 
 		// "Application-loop" - kehrt immer wieder zum Startbildschirm zurück
 		// wird beim Startbildschirm ESCAPE gedrückt wird die Anwendung beendet
+
 		while (true) {
 			// zeigt simple Startseite an, die mit "Enter" oder "Escape" verlassen wird
 			showStartseite(terminal);
@@ -68,18 +72,25 @@ public class Breakout {
 
 		Player player = new Player();
 		Ball ball = new Ball();
+		createLevel();
+
 
 		// Spiel in "Dauerschleife" (game loop)
-		while (true) {
+
+		inner:
+		while (gamesOn) {
 
 			ClearSpielfeld();
+
 			draw();
 			moveBall();
-			collisionBall();
+			collisionPlayer();
 			collisionBoarder();
+			gameOver();
+
 			spielfeld[42][41].backColor = Indexed.fromRGB(144, 44, 22);
-			terminal.setCursorPosition(6, 14);
-			Write("dddddddddd ", terminal);
+
+
 
 			// Hintergrundfarbe mit RGB (ACHTUNG 6x6x6 Color Cube)
 			// siehe TextColor Klasse in Lanterna
@@ -169,7 +180,7 @@ public class Breakout {
 		}
 	}
 
-	private static void showStartseite(Terminal terminal) throws IOException {
+	public static void showStartseite(Terminal terminal) throws IOException {
 
 		terminal.clearScreen();
 
@@ -206,8 +217,9 @@ public class Breakout {
 			KeyStroke eingabe = terminal.readInput();
 			if (eingabe != null) {
 
-				// System.out.println(eingabe); // zur Kontrolle kann eingebene
+				 //System.out.println(eingabe); // zur Kontrolle kann eingebene
 				// Taste angezeigt werden
+
 
 				// wenn die Taste ENTER gedruckt wird
 				if (eingabe.getKeyType().equals(KeyType.Enter)) {
@@ -220,6 +232,19 @@ public class Breakout {
 				// wenn die Taste ESC gedrückt wird, beendet sich das Programm
 				if (eingabe.getKeyType().equals(KeyType.Escape)) {
 					System.exit(0);
+				}
+
+				if(eingabe.getKeyType().equals(KeyType.F1)) {
+					level = KeyType.F1;
+					 break ;
+				}
+				if(eingabe.getKeyType().equals(2)){
+					level = KeyType.F2;
+					break;
+				}
+				if(eingabe.getKeyType().equals(3)){
+					level = KeyType.F3;
+					break;
 				}
 			}
 		}
@@ -242,6 +267,10 @@ public class Breakout {
 				terminal.setForegroundColor(spielfeld[i][j].textColor);
 				terminal.setBackgroundColor(spielfeld[i][j].backColor);
 				terminal.putCharacter(spielfeld[i][j].Text);
+				terminal.setBackgroundColor(spielfeld[50][2].backColor = Indexed.fromRGB(1,1,1));
+				terminal.setCursorPosition(50, 2);
+				Write(Integer.toString(Player.highscore), terminal);
+
 			}
 		}
 
@@ -270,6 +299,13 @@ public class Breakout {
 		//Zeichet Ball
 		spielfeld[(int)Ball.stuezVektorX][(int)Ball.stuezVektorY].Text = '\u058E';
 
+		//zeichne Blöcke
+		for(Block b: blocks){
+			b.drawBlock();
+		}
+
+
+
 	}
 	public static void moveBall(){
 
@@ -289,7 +325,7 @@ public class Breakout {
 		}
 	}
 
-	public static void collisionBall(){
+	public static void collisionPlayer(){
 
 		//wenn der ball und der Spieler auf der Y Achse auf der selbenstufe sind
 		if(Player.y -1  == Ball.stuezVektorY){
@@ -329,15 +365,31 @@ public class Breakout {
 
 	public static void collisionBoarder(){
 
-		if(Ball.stuezVektorY == 1){
+		//obere Boarder
+		if(Ball.stuezVektorY <= 1){
 			Ball.richtung = Ball.Richtung.unten;
 		}
 
-		if(Ball.stuezVektorX == 1){
+		if(Ball.stuezVektorX <= 1){
 			richtungAendernSeite();
 		}
-		if(Ball.stuezVektorX == spielfeldBreite - 2){
+		if(Ball.stuezVektorX >= spielfeldBreite - 2){
 			richtungAendernSeite();
+		}
+
+		if(Ball.stuezVektorY == spielfeldHoehe - 1){
+			Player.leben--;
+			Ball.stuezVektorX = Player.x + Player.groese / 2 + 1;
+			Ball.stuezVektorY = 20;
+			Ball.richtungsVektorY = 0;
+			Ball.richtungsVektorX = 0;
+		}
+	}
+
+	public static void gameOver(){
+		if(Player.leben == 0){
+			gamesOn = false;
+			//System.exit(0);
 		}
 	}
 
@@ -346,5 +398,24 @@ public class Breakout {
 		Ball.richtungsVektorX = Ball.richtungsVektorX * -1;
 	}
 
+	private static void filereader(){
+		File data = new File("Highscore.txt");
+	}
 
+	private static void createLevel(){
+		if(level.equals(KeyType.F1)){
+
+			blocks = new Block[2];
+			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
+			blocks[1] = new Block(14, 2, spielfeld , Block.Typ.typ2);
+		}
+		if(level.equals(KeyType.F2)){
+
+		}
+		if(level.equals(KeyType.F3)){
+
+		}
+
+
+	}
 }

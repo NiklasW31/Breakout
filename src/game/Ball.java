@@ -9,10 +9,10 @@ public class Ball {
     public static enum Richtung {oben, unten,}
 
     public static int geschwindigkeit;
-    public static double richtungsVektorX;
-    public static double richtungsVektorY;
-    public static double stuezVektorX;
-    public static double stuezVektorY;
+    public static int richtungsVektorX;
+    public static int richtungsVektorY;
+    public static int stuezVektorX;
+    public static int stuezVektorY;
 
     Ball(){
         stuezVektorX = 50;
