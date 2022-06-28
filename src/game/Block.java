@@ -10,7 +10,7 @@ public class Block {
     enum Typ{typ1, typ2, typ3}
 
     Typ typ;
-    boolean visibility;
+    boolean visibility = true;
     int hits;
 
 
