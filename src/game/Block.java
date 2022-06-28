@@ -35,7 +35,7 @@ public class Block {
     }
 
     public void drawBlock(){
-        if(visibility){
+        if(visibility = true){
             for(int i = 0; i < 11; i++){
                 spielfeld[x + i][y].backColor = TextColor.Indexed.fromRGB(44, 244, 22);
             }
