@@ -7,6 +7,7 @@ public class Block {
     int x;
     int y;
     Pixel[][] spielfeld;
+    //typ 3 soll unzerstörbar sein
     enum Typ{typ1, typ2, typ3}
 
     Typ typ;
@@ -35,7 +36,7 @@ public class Block {
     }
 
     public void drawBlock(){
-        if(visibility = true){
+        if(visibility == true){
             for(int i = 0; i < 11; i++){
                 spielfeld[x + i][y].backColor = TextColor.Indexed.fromRGB(44, 244, 22);
             }
