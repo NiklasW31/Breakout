@@ -1,0 +1,5 @@
+// Ball ohne Enum gesteuert werden. (nur mit VektorenGleichung.)
+//CollisionBall Player aufteilung ändern
+//Game over Bildschirm
+//wenn ball gespawn wird 2 sec delay
+//player in der mitte spawnen(und nicht der ball über Spieler)(mussnicht)
