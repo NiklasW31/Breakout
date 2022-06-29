@@ -55,7 +55,8 @@ public class Breakout {
 			double geschwindigkeit = 30;
 			runGame(geschwindigkeit, terminal);
 			
-			// GAME OVER  hier hinzufügen
+			// GAME OVER hier hinzufügen
+
 		}
 
 	}
@@ -89,8 +90,6 @@ public class Breakout {
 			gameOver();
 
 			spielfeld[42][41].backColor = Indexed.fromRGB(144, 44, 22);
-
-
 
 			// Hintergrundfarbe mit RGB (ACHTUNG 6x6x6 Color Cube)
 			// siehe TextColor Klasse in Lanterna
@@ -135,13 +134,11 @@ public class Breakout {
 				if (eingabe.getKeyType().equals(KeyType.ArrowLeft)) {
 					// kann nicht in entgegen gesetzte Richtung laufen (z.B. Snake)
 
-
 						
 						// wenn der Spielfeld verlassen wird, dann ...
 						if (Player.x > 2) {
 							Player.x --;
 						}
-
 
 
 				}
@@ -165,7 +162,6 @@ public class Breakout {
 					break;
 				}
 			}
-
 
 
 			try {
@@ -209,6 +205,10 @@ public class Breakout {
 
 		// Texte im Terminal anzeigen
 		terminal.flush();
+
+		if (gamesOn == false){
+			showGameOver(terminal);
+		}
 
 		// Eingabe abwarten
 		while (true) {
@@ -405,9 +405,10 @@ public class Breakout {
 	private static void createLevel(){
 		if(level.equals(KeyType.F1)){
 
-			blocks = new Block[2];
+			blocks = new Block[3];
 			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
 			blocks[1] = new Block(14, 2, spielfeld , Block.Typ.typ2);
+			blocks[2] = new Block(26, 2, spielfeld , Block.Typ.typ3);
 		}
 		if(level.equals(KeyType.F2)){
 
@@ -417,5 +418,33 @@ public class Breakout {
 		}
 
 
+	}
+	public static void showGameOver(Terminal terminal) throws IOException {
+
+		terminal.clearScreen();
+
+		// Startseite mit Text
+		// der Text wird hier direkt in das Terminal geschrieben und ncht in das Spielfeld
+		terminal.setCursorPosition(6, 6);
+		Write("  _____                         ____                 ", terminal);
+		terminal.setCursorPosition(6, 7);
+		Write(" / ____|                       / __ \\                ", terminal);
+		terminal.setCursorPosition(6, 8);
+		Write("| |  __  __ _ _ __ ___   ___  | |  | |_   _____ _ __ ", terminal);
+		terminal.setCursorPosition(6, 9);
+		Write("| | |_ |/ _` | '_ ` _ \\ / _ \\ | |  | \\ \\ / / _ \\ '__|", terminal);
+		terminal.setCursorPosition(6, 10);
+		Write("| |__| | (_| | | | | | |  __/ | |__| |\\ V /  __/ |   ", terminal);
+		terminal.setCursorPosition(6, 11);
+		Write(" \\_____|\\__,_|_| |_| |_|\\___|  \\____/  \\_/ \\___|_|   ", terminal);
+
+		// Cursor auf Position bewegen
+		terminal.setCursorPosition(6, 14);
+		Write("Game Over", terminal); // Text schreiben
+		terminal.setCursorPosition(6, 15);
+		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
+
+		// Texte im Terminal anzeigen
+		terminal.flush();
 	}
 }
