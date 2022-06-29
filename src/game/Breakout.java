@@ -386,7 +386,7 @@ public class Breakout {
 					blocks[i].hits--;
 					Player.highscore = Player.highscore+((i+1)*150);
 					System.out.println(blocks[i].hits);
-					richtungAendernSeite();
+					Ball.richtungsVektorY = Ball.richtungsVektorY *-1;
 				}
 			}
 		}
