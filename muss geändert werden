@@ -1,6 +1,5 @@
-// Ball ohne Enum gesteuert werden. (nur mit VektorenGleichung.)
 //CollisionBall Player aufteilung ändern
 //Game over Bildschirm
-//wenn ball gespawn wird 2 sec delay
-//player in der mitte spawnen(und nicht der ball über Spieler)(mussnicht)
+//wenn ball gespawn wird 2 sec delay muss noch verbessert werden
 //(muss nicht) player und Ball ohne Static 
+Highscore + name eingeben (nachdem game fertig ist)
