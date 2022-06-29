@@ -310,20 +310,9 @@ public class Breakout {
 	}
 	public static void moveBall(){
 
-
-		//bewegt den Ball nach oben
-		if(Ball.richtung == Ball.Richtung.oben){
-			Ball.stuezVektorX += Ball.richtungsVektorX;
-			Ball.stuezVektorY -= Ball.richtungsVektorY;
-			Ball.stuezVektorY--;
-		}
-
-		//bewegt den Ball nach unten
-		if(Ball.richtung == Ball.Richtung.unten){
 			Ball.stuezVektorX += Ball.richtungsVektorX;
 			Ball.stuezVektorY += Ball.richtungsVektorY;
-			Ball.stuezVektorY++;
-		}
+
 	}
 
 	public static void collisionPlayer(){
@@ -337,27 +326,25 @@ public class Breakout {
 				//wenn ein wert übereinstimmt
 				if(Player.x + i == Ball.stuezVektorX){
 
-					Ball.richtung = Ball.Richtung.oben;
-
-
 					//wenn ball auf die Linke seite vom Spieler trifft
-					if(i <= Player.groese / 3){
+					if(i <= 3){
 
 						Ball.richtungsVektorX --;
+						Ball.richtungsVektorY = Ball.richtungsVektorY * -1;
 
 					}
 
 					//wenn Ball in die Mitte vom spieler trifft
-					if(i >= Player.groese / 3 && i <= Player.groese / 2){
+					if(i >= 4 && i <= 7 ){
 
-
+						Ball.richtungsVektorY = Ball.richtungsVektorY * -1;
 					}
 
 					//wenn Ball auf die rechte Seite vom Spieler trifft
-					if(i >= Player.groese / 2){
+					if(i >= 8){
 
 						Ball.richtungsVektorX ++;
-
+						Ball.richtungsVektorY = Ball.richtungsVektorY * -1;
 					}
 				}
 			}
@@ -368,7 +355,8 @@ public class Breakout {
 
 		//obere Boarder
 		if(Ball.stuezVektorY <= 1){
-			Ball.richtung = Ball.Richtung.unten;
+
+			Ball.richtungsVektorY = Ball.richtungsVektorY *-1;
 		}
 
 		if(Ball.stuezVektorX <= 1){
@@ -382,7 +370,7 @@ public class Breakout {
 			Player.leben--;
 			Ball.stuezVektorX = Player.x + Player.groese / 2 + 1;
 			Ball.stuezVektorY = 20;
-			Ball.richtungsVektorY = 0;
+			Ball.richtungsVektorY = 1;
 			Ball.richtungsVektorX = 0;
 		}
 	}
@@ -423,10 +411,81 @@ public class Breakout {
 	private static void createLevel(){
 		if(level.equals(KeyType.F1)){
 
-			blocks = new Block[3];
+			blocks = new Block[2];
 			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
 			blocks[1] = new Block(14, 2, spielfeld , Block.Typ.typ2);
-			blocks[2] = new Block(26, 2, spielfeld , Block.Typ.typ3);
+			blocks = new Block[64];
+			blocks[0] = new Block(2, 3, spielfeld, Block.Typ.typ1);
+			blocks[1] = new Block(14, 3, spielfeld , Block.Typ.typ1);
+			blocks[2] = new Block(26, 3, spielfeld, Block.Typ.typ1);
+			blocks[3] = new Block(38, 3, spielfeld, Block.Typ.typ1);
+			blocks[4] = new Block(50, 3, spielfeld, Block.Typ.typ1);
+			blocks[5] = new Block(62, 3, spielfeld, Block.Typ.typ1);
+			blocks[6] = new Block(74, 3, spielfeld, Block.Typ.typ1);
+			blocks[7] = new Block(86, 3, spielfeld, Block.Typ.typ1);
+
+			blocks[8] = new Block(2, 5, spielfeld, Block.Typ.typ2);
+			blocks[9] = new Block(14, 5, spielfeld, Block.Typ.typ2);
+			blocks[10] = new Block(26, 5, spielfeld, Block.Typ.typ2);
+			blocks[11] = new Block(38, 5, spielfeld, Block.Typ.typ2);
+			blocks[12] = new Block(50, 5, spielfeld, Block.Typ.typ2);
+			blocks[13] = new Block(62, 5, spielfeld, Block.Typ.typ2);
+			blocks[14] = new Block(74, 5, spielfeld, Block.Typ.typ2);
+			blocks[15] = new Block(86, 5, spielfeld, Block.Typ.typ2);
+
+			blocks[16] = new Block(2, 7, spielfeld, Block.Typ.typ1);
+			blocks[17] = new Block(14, 7, spielfeld , Block.Typ.typ1);
+			blocks[18] = new Block(26, 7, spielfeld, Block.Typ.typ3);
+			blocks[19] = new Block(38, 7, spielfeld, Block.Typ.typ1);
+			blocks[20] = new Block(50, 7, spielfeld, Block.Typ.typ1);
+			blocks[21] = new Block(62, 7, spielfeld, Block.Typ.typ3);
+			blocks[22] = new Block(74, 7, spielfeld, Block.Typ.typ1);
+			blocks[23] = new Block(86, 7, spielfeld, Block.Typ.typ1);
+
+			blocks[24] = new Block(2, 9, spielfeld, Block.Typ.typ1);
+			blocks[25] = new Block(14, 9, spielfeld , Block.Typ.typ1);
+			blocks[26] = new Block(26, 9, spielfeld, Block.Typ.typ3);
+			blocks[27] = new Block(38, 9, spielfeld, Block.Typ.typ1);
+			blocks[28] = new Block(50, 9, spielfeld, Block.Typ.typ1);
+			blocks[29] = new Block(62, 9, spielfeld, Block.Typ.typ3);
+			blocks[30] = new Block(74, 9, spielfeld, Block.Typ.typ1);
+			blocks[31] = new Block(86, 9, spielfeld, Block.Typ.typ1);
+
+			blocks[32] = new Block(2, 11, spielfeld, Block.Typ.typ1);
+			blocks[33] = new Block(14, 11, spielfeld , Block.Typ.typ1);
+			blocks[34] = new Block(26, 11, spielfeld, Block.Typ.typ3);
+			blocks[35] = new Block(38, 11, spielfeld, Block.Typ.typ1);
+			blocks[36] = new Block(50, 11, spielfeld, Block.Typ.typ1);
+			blocks[37] = new Block(62, 11, spielfeld, Block.Typ.typ3);
+			blocks[38] = new Block(74, 11, spielfeld, Block.Typ.typ1);
+			blocks[39] = new Block(86, 11, spielfeld, Block.Typ.typ1);
+
+			blocks[40] = new Block(2, 13, spielfeld, Block.Typ.typ1);
+			blocks[41] = new Block(14, 13, spielfeld , Block.Typ.typ1);
+			blocks[42] = new Block(26, 13, spielfeld, Block.Typ.typ3);
+			blocks[43] = new Block(38, 13, spielfeld, Block.Typ.typ1);
+			blocks[44] = new Block(50, 13, spielfeld, Block.Typ.typ1);
+			blocks[45] = new Block(62, 13, spielfeld, Block.Typ.typ3);
+			blocks[46] = new Block(74, 13, spielfeld, Block.Typ.typ1);
+			blocks[47] = new Block(86, 13, spielfeld, Block.Typ.typ1);
+
+			blocks[48] = new Block(2, 15, spielfeld, Block.Typ.typ1);
+			blocks[49] = new Block(14, 15, spielfeld , Block.Typ.typ1);
+			blocks[50] = new Block(26, 15, spielfeld, Block.Typ.typ3);
+			blocks[51] = new Block(38, 15, spielfeld, Block.Typ.typ1);
+			blocks[52] = new Block(50, 15, spielfeld, Block.Typ.typ1);
+			blocks[53] = new Block(62, 15, spielfeld, Block.Typ.typ3);
+			blocks[54] = new Block(74, 15, spielfeld, Block.Typ.typ1);
+			blocks[55] = new Block(86, 15, spielfeld, Block.Typ.typ1);
+
+			blocks[56] = new Block(2, 17, spielfeld, Block.Typ.typ2);
+			blocks[57] = new Block(14, 17, spielfeld , Block.Typ.typ2);
+			blocks[58] = new Block(26, 17, spielfeld, Block.Typ.typ2);
+			blocks[59] = new Block(38, 17, spielfeld, Block.Typ.typ2);
+			blocks[60] = new Block(50, 17, spielfeld, Block.Typ.typ2);
+			blocks[61] = new Block(62, 17, spielfeld, Block.Typ.typ2);
+			blocks[62] = new Block(74, 17, spielfeld, Block.Typ.typ2);
+			blocks[63] = new Block(86, 17, spielfeld, Block.Typ.typ2);
 		}
 		if(level.equals(KeyType.F2)){
 
