@@ -6,12 +6,15 @@ import com.googlecode.lanterna.TextColor;
 public class Block {
     int x;
     int y;
-    Pixel[][] spielfeld;
+    public Pixel[][] spielfeld;
     //typ 3 soll unzerstörbar sein
     enum Typ{typ1, typ2, typ3}
 
     Typ typ;
     boolean visibility = true;
+    TextColor blockColorTyp1 = TextColor.Indexed.fromRGB(255,185,15);
+    TextColor blockColorTyp2 = TextColor.Indexed.fromRGB(0,0,205);
+    TextColor blockColorTyp3 = TextColor.Indexed.fromRGB(105,105,105);
     int hits;
 
 
@@ -31,14 +34,18 @@ public class Block {
             case typ3:
                 hits = -1;
                 break;
-
         }
     }
 
     public void drawBlock(){
-        if(visibility == true){
+        visibility();
+        if(visibility){
             for(int i = 0; i < 11; i++){
-                spielfeld[x + i][y].backColor = TextColor.Indexed.fromRGB(44, 244, 22);
+                switch (typ) {
+                    case typ1 -> spielfeld[x + i][y].backColor = blockColorTyp1;
+                    case typ2 -> spielfeld[x + i][y].backColor = blockColorTyp2;
+                    case typ3 -> spielfeld[x + i][y].backColor = blockColorTyp3;
+                }
             }
         }
 
