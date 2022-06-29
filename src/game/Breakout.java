@@ -15,6 +15,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.TerminalFactory;
 
 import static game.Player.gety;
+import static game.Player.highscore;
 
 public class Breakout {
 
@@ -87,6 +88,7 @@ public class Breakout {
 			moveBall();
 			collisionPlayer();
 			collisionBoarder();
+			collisionBall();
 			gameOver();
 
 			spielfeld[42][41].backColor = Indexed.fromRGB(144, 44, 22);
@@ -199,7 +201,7 @@ public class Breakout {
 		terminal.setCursorPosition(6, 14);
 		Write("Willkommen im Spiel", terminal); // Text schreiben
 		terminal.setCursorPosition(6, 15);
-		Write("Drücke ENTER, um das Spiel zu starten.", terminal);
+		Write("Drücke F1, um das Spiel zu starten.", terminal);
 		terminal.setCursorPosition(6, 16);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
 
@@ -222,13 +224,12 @@ public class Breakout {
 
 
 				// wenn die Taste ENTER gedruckt wird
-				if (eingabe.getKeyType().equals(KeyType.Enter)) {
+				//if (eingabe.getKeyType().equals(KeyType.Enter)) {
 
 					// Startbildschirm wird beendet / while Schleife wird 
 					// unterbrochen (GAME-Loop wird danach gestartet - siehe main-Methode 
-					break;
-				}
-
+				//	break;
+				//}
 				// wenn die Taste ESC gedrückt wird, beendet sich das Programm
 				if (eingabe.getKeyType().equals(KeyType.Escape)) {
 					System.exit(0);
@@ -238,11 +239,11 @@ public class Breakout {
 					level = KeyType.F1;
 					 break ;
 				}
-				if(eingabe.getKeyType().equals(2)){
+				if(eingabe.getKeyType().equals(KeyType.F2)){
 					level = KeyType.F2;
 					break;
 				}
-				if(eingabe.getKeyType().equals(3)){
+				if(eingabe.getKeyType().equals(KeyType.F3)){
 					level = KeyType.F3;
 					break;
 				}
@@ -385,6 +386,23 @@ public class Breakout {
 			Ball.richtungsVektorX = 0;
 		}
 	}
+	//Ball beruert einen Block
+	public static void collisionBall(){
+		int levelBlock = blocks.length;
+		int blocksLength = 11;
+		//System.out.println(blocks.length);
+		for(int i = 0;i < levelBlock;i++ ){
+			for(int j = 0;j < blocksLength;j++) {
+				if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY && blocks[i].visibility == true) {
+					System.out.println("hit");
+					blocks[i].hits--;
+					Player.highscore = Player.highscore+((i+1)*150);
+					System.out.println(blocks[i].hits);
+					richtungAendernSeite();
+				}
+			}
+		}
+	}
 
 	public static void gameOver(){
 		if(Player.leben == 0){
@@ -417,14 +435,14 @@ public class Breakout {
 
 		}
 
-
 	}
+	//GameOver Bildschirm
 	public static void showGameOver(Terminal terminal) throws IOException {
 
 		terminal.clearScreen();
 
-		// Startseite mit Text
-		// der Text wird hier direkt in das Terminal geschrieben und ncht in das Spielfeld
+		// GameOver mit Text
+		// der Text wird hier direkt in das Terminal geschrieben und nicht in das Spielfeld
 		terminal.setCursorPosition(6, 6);
 		Write("  _____                         ____                 ", terminal);
 		terminal.setCursorPosition(6, 7);
