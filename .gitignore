@@ -1,0 +1,11 @@
+
+# Maven stuff
+target/
+
+# Java compile output
+*.class
+*.jar
+
+# IntelliJ stuff
+.idea/
+*.iml
