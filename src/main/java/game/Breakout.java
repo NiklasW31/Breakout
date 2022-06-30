@@ -88,7 +88,7 @@ public class Breakout {
 			moveBall();
 			collisionPlayer();
 			collisionBoarder();
-			collisionBall();
+			collisionBlock();
 			gameOver();
 
 			spielfeld[42][41].backColor = Indexed.fromRGB(144, 44, 22);
@@ -375,18 +375,29 @@ public class Breakout {
 		}
 	}
 	//Ball beruert einen Block
-	public static void collisionBall(){
+	public static void collisionBlock(){
 		int levelBlock = blocks.length;
 		int blocksLength = 11;
 		//System.out.println(blocks.length);
 		for(int i = 0;i < levelBlock;i++ ){
 			for(int j = 0;j < blocksLength;j++) {
-				if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY && blocks[i].visibility == true) {
-					System.out.println("hit");
-					blocks[i].hits--;
-					Player.highscore = Player.highscore+((i+1)*150);
-					System.out.println(blocks[i].hits);
-					Ball.richtungsVektorY = Ball.richtungsVektorY *-1;
+				if(Ball.stuezVektorY >= 0){
+					if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY-1 && blocks[i].visibility == true) {
+						System.out.println("hit");
+						blocks[i].hits--;
+						Player.highscore = Player.highscore+((i+1)*150);
+						System.out.println(blocks[i].hits);
+						Ball.richtungsVektorY = Ball.richtungsVektorY *-1;
+				}else if(Ball.stuezVektorY <= 0){
+						if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY+1 && blocks[i].visibility == true) {
+							System.out.println("hit");
+							blocks[i].hits--;
+							Player.highscore = Player.highscore + ((i + 1) * 150);
+							System.out.println(blocks[i].hits);
+							Ball.richtungsVektorY = Ball.richtungsVektorY * -1;
+						}
+					}
+
 				}
 			}
 		}
