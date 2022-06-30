@@ -271,7 +271,8 @@ public class Breakout {
 				terminal.setBackgroundColor(spielfeld[50][2].backColor = Indexed.fromRGB(1,1,1));
 				terminal.setCursorPosition(50, 2);
 				Write(Integer.toString(Player.highscore), terminal);
-
+					terminal.setCursorPosition(75, 2);
+					Write(Player.leben +  "\u2665", terminal);
 			}
 		}
 
