@@ -385,7 +385,7 @@ public class Breakout {
 					if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY-1 && blocks[i].visibility == true) {
 						System.out.println("hit");
 						blocks[i].hits--;
-						Player.highscore = Player.highscore+((i+1)*150);
+						Player.highscore = Player.highscore+((i+1)*15);
 						System.out.println(blocks[i].hits);
 						Ball.richtungsVektorY = Ball.richtungsVektorY *-1;
 				}else if(Ball.stuezVektorY <= 0){
@@ -499,10 +499,14 @@ public class Breakout {
 			blocks[63] = new Block(86, 17, spielfeld, Block.Typ.typ2);
 		}
 		if(level.equals(KeyType.F2)){
-
+			blocks = new Block[2];
+			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
+			blocks[1] = new Block(14, 2, spielfeld, Block.Typ.typ1);
 		}
 		if(level.equals(KeyType.F3)){
-
+			blocks = new Block[2];
+			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
+			blocks[1] = new Block(14, 2, spielfeld, Block.Typ.typ1);
 		}
 
 	}
