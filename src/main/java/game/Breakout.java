@@ -1,8 +1,11 @@
 package game;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLOutput;
+import java.util.Scanner;
 import java.util.concurrent.BlockingDeque;
 
 import com.googlecode.lanterna.TerminalSize;
@@ -25,8 +28,11 @@ public class Breakout {
 	public static TextColor DefaultBackColor = TextColor.ANSI.BLACK;
 	public static TextColor DefaultTextColor = TextColor.ANSI.WHITE;
 	public static boolean gamesOn = true;
-	public static KeyType level;
+	public static KeyType selectlevel;
+	public static int level;
 	public static Block[] blocks;
+	public static int localHighscore;
+	public static String localName;
 
 	public static void main(String[] args) throws IOException {
 
@@ -236,15 +242,18 @@ public class Breakout {
 				}
 
 				if(eingabe.getKeyType().equals(KeyType.F1)) {
-					level = KeyType.F1;
+					selectlevel = KeyType.F1;
+					level = 1;
 					 break ;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F2)){
-					level = KeyType.F2;
+					selectlevel = KeyType.F2;
+					level = 2;
 					break;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F3)){
-					level = KeyType.F3;
+					selectlevel = KeyType.F3;
+					level = 3;
 					break;
 				}
 			}
@@ -369,10 +378,13 @@ public class Breakout {
 
 		if(Ball.stuezVektorY == spielfeldHoehe - 1){
 			Player.leben--;
+			Player.x = 42;
 			Ball.stuezVektorX = Player.x + Player.groese / 2 + 1;
 			Ball.stuezVektorY = 20;
 			Ball.richtungsVektorY = 1;
 			Ball.richtungsVektorX = 0;
+			draw();
+			sleep2Sec();
 		}
 	}
 	//Ball beruert einen Block
@@ -421,7 +433,7 @@ public class Breakout {
 	}
 
 	private static void createLevel(){
-		if(level.equals(KeyType.F1)){
+		if(selectlevel.equals(KeyType.F1)){
 
 			blocks = new Block[2];
 			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
@@ -499,12 +511,12 @@ public class Breakout {
 			blocks[62] = new Block(74, 17, spielfeld, Block.Typ.typ2);
 			blocks[63] = new Block(86, 17, spielfeld, Block.Typ.typ2);
 		}
-		if(level.equals(KeyType.F2)){
+		if(selectlevel.equals(KeyType.F2)){
 			blocks = new Block[2];
 			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
 			blocks[1] = new Block(14, 2, spielfeld, Block.Typ.typ1);
 		}
-		if(level.equals(KeyType.F3)){
+		if(selectlevel.equals(KeyType.F3)){
 			blocks = new Block[2];
 			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
 			blocks[1] = new Block(14, 2, spielfeld, Block.Typ.typ1);
@@ -540,4 +552,54 @@ public class Breakout {
 		// Texte im Terminal anzeigen
 		terminal.flush();
 	}
+
+	public static void sleep2Sec(){
+		try
+		{
+			Thread.sleep(2000);
+		}
+		catch(InterruptedException ex)
+		{
+			Thread.currentThread().interrupt();
+		}
+	}
+	public static void changeHighscore(){
+
+		String strgAll = null;
+		String higscoreString = Integer.toString(Player.highscore);
+		String[] splitLevel;
+		String[] splithigscore;
+
+		File data = new File("highscore.txt");
+		Scanner scanner = null;
+
+		try{
+			scanner = new Scanner(data);
+			while (scanner.hasNext()){
+				strgAll = scanner.nextLine();
+			}
+		}catch(FileNotFoundException e){
+			System.out.println("File not found");
+		}
+		splitLevel = strgAll.split("\n", 3);
+		switch (level){
+			case 1:
+				splithigscore = splitLevel[0].split(" ");
+				localName = splithigscore[0];
+				localHighscore =  Integer.parseInt(splithigscore[1]);
+				break;
+			case 2:
+				splithigscore = splitLevel[1].split(" ");
+				localName = splithigscore[0];
+				localHighscore =  Integer.parseInt(splithigscore[1]);
+				break;
+			case 3:
+				splithigscore = splitLevel[2].split(" ");
+				localName = splithigscore[0];
+				localHighscore =  Integer.parseInt(splithigscore[1]);
+				break;
+		}
+	}
+
+
 }

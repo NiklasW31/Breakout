@@ -1,1 +1,3 @@
-Hier wird später der Highscore gespeichert
+uzu 2000
+hello 3000
+BitteGeh 100
