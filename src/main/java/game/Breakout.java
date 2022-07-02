@@ -592,7 +592,7 @@ public class Breakout {
 				if(keyStroke.getKeyType() == KeyType.Backspace){
 					username = username.substring(0, username.length()-1);
 				}else {
-					char eingabe = keyStroke.getCharacter().toString().charAt(0);
+					char eingabe = keyStroke.getCharacter();
 					username = username + eingabe;
 				}
 			}catch (NullPointerException e) {
