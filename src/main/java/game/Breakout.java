@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLOutput;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.concurrent.BlockingDeque;
 
@@ -31,8 +32,11 @@ public class Breakout {
 	public static KeyType selectlevel;
 	public static int level;
 	public static Block[] blocks;
+	public static boolean levelStart = true;
+	public static HashMap<Integer, String> blockHM = new HashMap<Integer, String>();
 	public static int localHighscore;
 	public static String localName;
+
 
 	public static void main(String[] args) throws IOException {
 
@@ -423,6 +427,25 @@ public class Breakout {
 		}
 	}
 
+	public static void levelCleared(){
+		while(levelStart){
+			for(int i = 0; i < blocks.length;i++){
+				blockHM.put(i ,"Block"+1);
+			}
+			levelStart = false;
+		}
+		for(int j = 0; j < blocks.length; j++){
+			if (blockHM.containsKey(j) && blocks[j].visibility == false){
+				blockHM.remove(j);
+				System.out.println("block "+j+" wurde entfernt");
+				System.out.println(blockHM.size() + "noch übrig");
+			}else if(blockHM.isEmpty()){
+				System.out.println("level cleared");
+				//Funktion fehlt noch
+			}
+		}
+	}
+
 
 	public static void richtungAendernSeite(){
 		Ball.richtungsVektorX = Ball.richtungsVektorX * -1;
@@ -546,8 +569,36 @@ public class Breakout {
 		// Cursor auf Position bewegen
 		terminal.setCursorPosition(6, 14);
 		Write("Game Over", terminal); // Text schreiben
-		terminal.setCursorPosition(6, 15);
+		terminal.setCursorPosition(6,15);
+		Write("Du hast " + Player.highscore + " Punkte gesammelt.", terminal);
+		terminal.setCursorPosition(6, 16);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
+
+		String username = "";
+
+		while(true) {
+			KeyStroke keyStroke = terminal.pollInput();
+			terminal.setCursorPosition(9, 20);
+			Write("Gebe einen Namen ein: " + username + "\n" , terminal);
+			if (keyStroke == null) {
+				terminal.flush();
+				keyStroke = terminal.readInput();
+			}
+			if (keyStroke.getKeyType() == KeyType.Enter) {
+				//in Txt schreiben
+				break;
+			}
+			try {
+				if(keyStroke.getKeyType() == KeyType.Backspace){
+					username = username.substring(0, username.length()-1);
+				}else {
+					char eingabe = keyStroke.getCharacter().toString().charAt(0);
+					username = username + eingabe;
+				}
+			}catch (NullPointerException e) {
+				System.out.println("ungültige eingabe");
+			}
+		}
 
 		// Texte im Terminal anzeigen
 		terminal.flush();
