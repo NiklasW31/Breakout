@@ -36,7 +36,7 @@ public class Breakout {
 	public static int localHighscore;
 	public static String localName;
 	public static String strgAll = "";
-	public static int level;
+	public static String buffer;
 
 
 	public static void main(String[] args) throws IOException {
@@ -58,6 +58,9 @@ public class Breakout {
 		Terminal terminal = factory.createTerminal();
 		terminal.setCursorVisible(false);
 
+
+
+
 		// "Application-loop" - kehrt immer wieder zum Startbildschirm zurück
 		// wird beim Startbildschirm ESCAPE gedrückt wird die Anwendung beendet
 
@@ -72,6 +75,7 @@ public class Breakout {
 			// GAME OVER hier hinzufügen
 
 		}
+
 
 	}
 
@@ -219,7 +223,7 @@ public class Breakout {
 		terminal.setCursorPosition(6, 16);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
 		terminal.setCursorPosition(6,17 );
-		Write(strgAll, terminal);
+		Write(buffer, terminal);
 
 		// Texte im Terminal anzeigen
 		terminal.flush();
@@ -253,17 +257,14 @@ public class Breakout {
 
 				if(eingabe.getKeyType().equals(KeyType.F1)) {
 					selectlevel = KeyType.F1;
-					level = 1;
 					 break ;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F2)){
 					selectlevel = KeyType.F2;
-					level = 2;
 					break;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F3)){
 					selectlevel = KeyType.F3;
-					level = 3;
 					break;
 				}
 			}
@@ -649,6 +650,8 @@ public class Breakout {
 		Write("Du hast " + Player.highscore + " Punkte gesammelt.", terminal);
 		terminal.setCursorPosition(6, 16);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
+		terminal.setCursorPosition(6, 17);
+		Write(localName + localHighscore, terminal);
 
 
 		String username = "";
@@ -698,6 +701,9 @@ public class Breakout {
 		String[] splitlevel = new String[2];
 		String split;
 		String[] splitscore;
+		String[] strArray = new String[3];
+
+
 
 		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
 		Scanner scan = null;
@@ -705,7 +711,9 @@ public class Breakout {
 
 			scan = new Scanner(datei);
 			while (scan.hasNext()){
-				strgAll += scan.nextLine();
+				for(int i = 0; i < strArray.length; i++ ){
+					strArray[i] = scan.nextLine();
+				}
 			}
 
 		}catch(FileNotFoundException e){
@@ -713,31 +721,9 @@ public class Breakout {
 		}
 
 
-		splitlevel = strgAll.split("\n", 3);
-
-		switch (level){
-			case 1:
-				split = splitlevel[0];
-				splitscore = split.split(" ");
-				localName = splitscore[0];
-				localHighscore = Integer.parseInt(splitscore[1]);
-				break;
-			case 2:
-				split = splitlevel[1];
-				splitscore = split.split(" ");
-				localName = splitscore[0];
-				localHighscore = Integer.parseInt(splitscore[1]);
-				break;
-			case 3:
-				split = splitlevel[2];
-				splitscore = split.split(" ");
-				localName = splitscore[0];
-				localHighscore = Integer.parseInt(splitscore[1]);
-				break;
+		for (int i = 0; i < 3; i++){
+			splitlevel = strgAll.split("\n");
 		}
-
-		//localName = split[0];
-		//localHighscore =  Integer.parseInt(split[1]);
 	}
 
 }
