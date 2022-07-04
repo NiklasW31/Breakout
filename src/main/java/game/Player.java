@@ -1,6 +1,6 @@
 package game;
 
-public class Player extends Breakout{
+public class Player{
     static public int x;
     static public int y;
     static public int leben;

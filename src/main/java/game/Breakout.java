@@ -874,6 +874,7 @@ public class Breakout {
 			writer.write(strArray[1] + "\n");
 			writer.write(strArray[2] + "\n");
 			writer.flush();
+			username = "";
 		} catch (IOException e) {
 			System.out.printf("Datei konnte nicht bearbeitet werden");
 		}
