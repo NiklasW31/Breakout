@@ -727,7 +727,7 @@ public class Breakout {
 		String split;
 		String[] splitscore;
 
-		File datei = new File("src/main/java/game/Highscore.txt");
+		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
 		Scanner scan = null;
 		try{
 
