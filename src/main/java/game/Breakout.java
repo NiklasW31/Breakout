@@ -1,9 +1,6 @@
 package game;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -35,8 +32,13 @@ public class Breakout {
 	public static HashMap<Integer, String> blockHM = new HashMap<Integer, String>();
 	public static int localHighscore;
 	public static String localName;
-	public static String strgAll = "";
-	public static String buffer;
+	public static int level;
+	public static String[] strArray = new String[3];
+
+	public static String split[];
+	public static String username = "";
+
+
 
 
 	public static void main(String[] args) throws IOException {
@@ -223,7 +225,11 @@ public class Breakout {
 		terminal.setCursorPosition(6, 16);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
 		terminal.setCursorPosition(6,17 );
-		Write(buffer, terminal);
+		Write("Highscore Level 1: " + strArray[0], terminal);
+		terminal.setCursorPosition(6,18 );
+		Write("Highscore Level 2: "+strArray[1], terminal);
+		terminal.setCursorPosition(6,19 );
+		Write("Highscore Level 3: "+ strArray[2], terminal);
 
 		// Texte im Terminal anzeigen
 		terminal.flush();
@@ -257,14 +263,20 @@ public class Breakout {
 
 				if(eingabe.getKeyType().equals(KeyType.F1)) {
 					selectlevel = KeyType.F1;
+					level = 1;
+					getlevelhighscore();
 					 break ;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F2)){
 					selectlevel = KeyType.F2;
+					level = 2;
+					getlevelhighscore();
 					break;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F3)){
 					selectlevel = KeyType.F3;
+					level = 3;
+					getlevelhighscore();
 					break;
 				}
 			}
@@ -331,8 +343,14 @@ public class Breakout {
 	}
 	public static void moveBall(){
 
-			Ball.stuezVektorX += Ball.richtungsVektorX;
-			Ball.stuezVektorY += Ball.richtungsVektorY;
+		if(Ball.richtungsVektorX == 3){
+			Ball.richtungsVektorX = 2;
+		}
+		if(Ball.richtungsVektorX == -3){
+			Ball.richtungsVektorX = -2;
+		}
+		Ball.stuezVektorX += Ball.richtungsVektorX;
+		Ball.stuezVektorY += Ball.richtungsVektorY;
 
 	}
 
@@ -395,7 +413,7 @@ public class Breakout {
 			Ball.richtungsVektorY = 1;
 			Ball.richtungsVektorX = 0;
 			draw();
-			sleep2Sec();
+			//sleep2Sec();
 		}
 	}
 	//Ball beruert einen Block
@@ -617,9 +635,81 @@ public class Breakout {
 			blocks[63] = new Block(86, 17, spielfeld, Block.Typ.typ1);
 		}
 		if(selectlevel.equals(KeyType.F3)){
-			blocks = new Block[2];
-			blocks[0] = new Block(2, 2, spielfeld, Block.Typ.typ1);
-			blocks[1] = new Block(14, 2, spielfeld, Block.Typ.typ1);
+			blocks = new Block[1];
+			blocks[0] = new Block(2, 3, spielfeld, Block.Typ.typ2);
+			/*
+			blocks[1] = new Block(14, 3, spielfeld , Block.Typ.typ2);
+			blocks[2] = new Block(26, 3, spielfeld, Block.Typ.typ2);
+			blocks[3] = new Block(38, 3, spielfeld, Block.Typ.typ2);
+			blocks[4] = new Block(50, 3, spielfeld, Block.Typ.typ2);
+			blocks[5] = new Block(62, 3, spielfeld, Block.Typ.typ2);
+			blocks[6] = new Block(74, 3, spielfeld, Block.Typ.typ2);
+			blocks[7] = new Block(86, 3, spielfeld, Block.Typ.typ2);
+
+			blocks[8] = new Block(2, 5, spielfeld, Block.Typ.typ1);
+			blocks[9] = new Block(14, 5, spielfeld, Block.Typ.typ1);
+			blocks[10] = new Block(26, 5, spielfeld, Block.Typ.typ1);
+			blocks[11] = new Block(38, 5, spielfeld, Block.Typ.typ1);
+			blocks[12] = new Block(50, 5, spielfeld, Block.Typ.typ1);
+			blocks[13] = new Block(62, 5, spielfeld, Block.Typ.typ1);
+			blocks[14] = new Block(74, 5, spielfeld, Block.Typ.typ1);
+			blocks[15] = new Block(86, 5, spielfeld, Block.Typ.typ1);
+
+			blocks[16] = new Block(2, 7, spielfeld, Block.Typ.typ1);
+			blocks[17] = new Block(14, 7, spielfeld , Block.Typ.typ1);
+			blocks[18] = new Block(26, 7, spielfeld, Block.Typ.typ1);
+			blocks[19] = new Block(38, 7, spielfeld, Block.Typ.typ1);
+			blocks[20] = new Block(50, 7, spielfeld, Block.Typ.typ1);
+			blocks[21] = new Block(62, 7, spielfeld, Block.Typ.typ1);
+			blocks[22] = new Block(74, 7, spielfeld, Block.Typ.typ1);
+			blocks[23] = new Block(86, 7, spielfeld, Block.Typ.typ1);
+
+			blocks[24] = new Block(2, 9, spielfeld, Block.Typ.typ1);
+			blocks[25] = new Block(14, 9, spielfeld , Block.Typ.typ1);
+			blocks[26] = new Block(26, 9, spielfeld, Block.Typ.typ1);
+			blocks[27] = new Block(38, 9, spielfeld, Block.Typ.typ1);
+			blocks[28] = new Block(50, 9, spielfeld, Block.Typ.typ1);
+			blocks[29] = new Block(62, 9, spielfeld, Block.Typ.typ1);
+			blocks[30] = new Block(74, 9, spielfeld, Block.Typ.typ1);
+			blocks[31] = new Block(86, 9, spielfeld, Block.Typ.typ1);
+
+			blocks[32] = new Block(2, 11, spielfeld, Block.Typ.typ1);
+			blocks[33] = new Block(14, 11, spielfeld , Block.Typ.typ1);
+			blocks[34] = new Block(26, 11, spielfeld, Block.Typ.typ1);
+			blocks[35] = new Block(38, 11, spielfeld, Block.Typ.typ1);
+			blocks[36] = new Block(50, 11, spielfeld, Block.Typ.typ1);
+			blocks[37] = new Block(62, 11, spielfeld, Block.Typ.typ1);
+			blocks[38] = new Block(74, 11, spielfeld, Block.Typ.typ1);
+			blocks[39] = new Block(86, 11, spielfeld, Block.Typ.typ1);
+
+			blocks[40] = new Block(2, 13, spielfeld, Block.Typ.typ1);
+			blocks[41] = new Block(14, 13, spielfeld , Block.Typ.typ1);
+			blocks[42] = new Block(26, 13, spielfeld, Block.Typ.typ1);
+			blocks[43] = new Block(38, 13, spielfeld, Block.Typ.typ1);
+			blocks[44] = new Block(50, 13, spielfeld, Block.Typ.typ1);
+			blocks[45] = new Block(62, 13, spielfeld, Block.Typ.typ1);
+			blocks[46] = new Block(74, 13, spielfeld, Block.Typ.typ1);
+			blocks[47] = new Block(86, 13, spielfeld, Block.Typ.typ1);
+
+			blocks[48] = new Block(2, 15, spielfeld, Block.Typ.typ3);
+			blocks[49] = new Block(14, 15, spielfeld , Block.Typ.typ1);
+			blocks[50] = new Block(26, 15, spielfeld, Block.Typ.typ1);
+			blocks[51] = new Block(38, 15, spielfeld, Block.Typ.typ1);
+			blocks[52] = new Block(50, 15, spielfeld, Block.Typ.typ1);
+			blocks[53] = new Block(62, 15, spielfeld, Block.Typ.typ1);
+			blocks[54] = new Block(74, 15, spielfeld, Block.Typ.typ1);
+			blocks[55] = new Block(86, 15, spielfeld, Block.Typ.typ3);
+
+			blocks[56] = new Block(2, 17, spielfeld, Block.Typ.typ3);
+			blocks[57] = new Block(14, 17, spielfeld , Block.Typ.typ3);
+			blocks[58] = new Block(26, 17, spielfeld, Block.Typ.typ1);
+			blocks[59] = new Block(38, 17, spielfeld, Block.Typ.typ1);
+			blocks[60] = new Block(50, 17, spielfeld, Block.Typ.typ1);
+			blocks[61] = new Block(62, 17, spielfeld, Block.Typ.typ1);
+			blocks[62] = new Block(74, 17, spielfeld, Block.Typ.typ3);
+			blocks[63] = new Block(86, 17, spielfeld, Block.Typ.typ3);
+			*/
+
 		}
 
 	}
@@ -648,13 +738,21 @@ public class Breakout {
 		Write("Game Over", terminal); // Text schreiben
 		terminal.setCursorPosition(6,15);
 		Write("Du hast " + Player.highscore + " Punkte gesammelt.", terminal);
-		terminal.setCursorPosition(6, 16);
-		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
+		if(highscore > localHighscore){
+			terminal.setCursorPosition(6,16);
+			Write("du hast den Highscore geknackt glückwunsch", terminal);
+		}else{
+			terminal.setCursorPosition(6,16);
+			Write("Du hast Verloren, schade villeicht nächstes mal", terminal);
+		}
 		terminal.setCursorPosition(6, 17);
-		Write(localName + localHighscore, terminal);
+		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
+		terminal.setCursorPosition(6, 18);
 
 
-		String username = "";
+
+
+
 
 		while(true) {
 			KeyStroke keyStroke = terminal.pollInput();
@@ -666,6 +764,7 @@ public class Breakout {
 			}
 			if (keyStroke.getKeyType() == KeyType.Enter) {
 				//in Txt schreiben
+				setHighscore();
 				break;
 			}
 			try {
@@ -696,19 +795,12 @@ public class Breakout {
 	}
 
 	public static void getHighscore(){
-
-
-		String[] splitlevel = new String[2];
-		String split;
-		String[] splitscore;
-		String[] strArray = new String[3];
-
-
-
 		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
 		Scanner scan = null;
+		strArray[0] = "";
+		strArray[1] = "";
+		strArray[2] = "";
 		try{
-
 			scan = new Scanner(datei);
 			while (scan.hasNext()){
 				for(int i = 0; i < strArray.length; i++ ){
@@ -719,11 +811,61 @@ public class Breakout {
 		}catch(FileNotFoundException e){
 			System.out.println("File not found");
 		}
+	}
 
+	public static void getlevelhighscore(){
 
-		for (int i = 0; i < 3; i++){
-			splitlevel = strgAll.split("\n");
+		switch (level){
+			case 1:
+				split = strArray[0].split(" ");
+				localName = split[0];
+				localHighscore = Integer.parseInt(split[1]);
+				break;
+			case 2:
+				split = strArray[1].split(" ");
+				localName = split[0];
+				localHighscore = Integer.parseInt(split[1]);
+				break;
+			case 3:
+				split = strArray[2].split(" ");
+				localName = split[0];
+				localHighscore = Integer.parseInt(split[1]);
+				break;
 		}
 	}
 
+	public static void setHighscore(){
+		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
+		String[] test = new String[3];
+		try{
+			FileWriter writer = new FileWriter(datei);
+			if(localHighscore < Player.highscore){
+				switch (level){
+					case 1:
+						test[0] = username;
+						test[1] = Integer.toString(highscore);
+						strArray[0] = test[0] +" "+  test[1];
+
+						break;
+					case 2:
+						test[0] = username;
+						test[1] = Integer.toString(highscore);
+						strArray[1] = test[0] +" "+ test[1];
+						break;
+					case 3:
+						test[0] = username;
+						test[1] = Integer.toString(highscore);
+						strArray[2] = test[0] +" "+ test[1];
+						break;
+				}
+			}
+			writer.write(strArray[0] + "\n");
+			writer.write(strArray[1] + "\n");
+			writer.write(strArray[2] + "\n");
+			writer.flush();
+		} catch (IOException e) {
+			System.out.printf("Datei konnte nicht bearbeitet werden");
+		}
+
+	}
 }
