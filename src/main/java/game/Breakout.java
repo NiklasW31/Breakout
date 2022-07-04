@@ -15,8 +15,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.TerminalFactory;
 
-import static game.Player.gety;
-import static game.Player.highscore;
+import static game.Player.*;
 
 public class Breakout {
 
@@ -221,14 +220,18 @@ public class Breakout {
 		terminal.setCursorPosition(6, 14);
 		Write("Willkommen im Spiel", terminal); // Text schreiben
 		terminal.setCursorPosition(6, 15);
-		Write("Drücke F1, um das Spiel zu starten.", terminal);
+		Write("Drücke F1, um das erste Level zu Spielen.", terminal);
 		terminal.setCursorPosition(6, 16);
+		Write("Drücke F2, um das zweite Level zu Spielen.", terminal);
+		terminal.setCursorPosition(6, 17);
+		Write("Drücke F3, um das dritte Level zu Spielen.", terminal);
+		terminal.setCursorPosition(6, 18);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
-		terminal.setCursorPosition(6,17 );
+		terminal.setCursorPosition(6,25 );
 		Write("Highscore Level 1: " + strArray[0], terminal);
-		terminal.setCursorPosition(6,18 );
+		terminal.setCursorPosition(6,26 );
 		Write("Highscore Level 2: "+strArray[1], terminal);
-		terminal.setCursorPosition(6,19 );
+		terminal.setCursorPosition(6,27 );
 		Write("Highscore Level 3: "+ strArray[2], terminal);
 
 		// Texte im Terminal anzeigen
@@ -264,18 +267,27 @@ public class Breakout {
 				if(eingabe.getKeyType().equals(KeyType.F1)) {
 					selectlevel = KeyType.F1;
 					level = 1;
+					leben = 3;
+					localHighscore = 0;
+					gamesOn = true;
 					getlevelhighscore();
 					 break ;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F2)){
 					selectlevel = KeyType.F2;
 					level = 2;
+					leben = 3;
+					localHighscore = 0;
+					gamesOn = true;
 					getlevelhighscore();
 					break;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F3)){
 					selectlevel = KeyType.F3;
 					level = 3;
+					leben = 3;
+					localHighscore = 0;
+					gamesOn = true;
 					getlevelhighscore();
 					break;
 				}
@@ -407,13 +419,13 @@ public class Breakout {
 
 		if(Ball.stuezVektorY == spielfeldHoehe - 1){
 			Player.leben--;
-			Player.x = 42;
+			Player.x = 45;
 			Ball.stuezVektorX = Player.x + Player.groese / 2 + 1;
 			Ball.stuezVektorY = 20;
 			Ball.richtungsVektorY = 1;
 			Ball.richtungsVektorX = 0;
 			draw();
-			//sleep2Sec();
+			sleep2Sec();
 		}
 	}
 	//Ball beruert einen Block
@@ -480,9 +492,6 @@ public class Breakout {
 		Ball.richtungsVektorX = Ball.richtungsVektorX * -1;
 	}
 
-	private static void filereader(){
-		File data = new File("Highscore.txt");
-	}
 
 	private static void createLevel(){
 		if(selectlevel.equals(KeyType.F1)){
@@ -747,33 +756,41 @@ public class Breakout {
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
 		terminal.setCursorPosition(6, 18);
 
+		terminal.setCursorPosition(6,25 );
+		Write("Highscore Level 1: " + strArray[0], terminal);
+		terminal.setCursorPosition(6,26 );
+		Write("Highscore Level 2: "+strArray[1], terminal);
+		terminal.setCursorPosition(6,27 );
+		Write("Highscore Level 3: "+ strArray[2], terminal);
 
 
-
-
-
-		while(true) {
-			KeyStroke keyStroke = terminal.pollInput();
-			terminal.setCursorPosition(9, 20);
-			Write("Gebe einen Namen ein: " + username + "\n" , terminal);
-			if (keyStroke == null) {
-				terminal.flush();
-				keyStroke = terminal.readInput();
-			}
-			if (keyStroke.getKeyType() == KeyType.Enter) {
-				//in Txt schreiben
-				setHighscore();
-				break;
-			}
-			try {
-				if(keyStroke.getKeyType() == KeyType.Backspace){
-					username = username.substring(0, username.length()-1);
-				}else {
-					char eingabe = keyStroke.getCharacter();
-					username = username + eingabe;
+		if(localHighscore < Player.highscore) {
+			while (true) {
+				terminal.clearScreen();
+				KeyStroke keyStroke = terminal.pollInput();
+				terminal.setCursorPosition(9, 20);
+				Write("Gebe einen Namen ein: " + username + "\n", terminal);
+				if (keyStroke == null) {
+					terminal.flush();
+					keyStroke = terminal.readInput();
 				}
-			}catch (NullPointerException e) {
-				System.out.println("ungültige eingabe");
+				if (keyStroke.getKeyType() == KeyType.Enter) {
+					//in Txt schreiben
+					setHighscore();
+					showGameOver(terminal);
+					terminal.flush();
+					break;
+				}
+				try {
+					if (keyStroke.getKeyType() == KeyType.Backspace) {
+						username = username.substring(0, username.length() - 1);
+					} else {
+						char eingabe = keyStroke.getCharacter();
+						username = username + eingabe;
+					}
+				} catch (NullPointerException e) {
+					System.out.println("ungültige eingabe");
+				}
 			}
 		}
 
@@ -793,7 +810,7 @@ public class Breakout {
 	}
 
 	public static void getHighscore(){
-		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
+		File datei = new File("src\\main\\java\\game\\Highscore.txt");
 		Scanner scan = null;
 		strArray[0] = "";
 		strArray[1] = "";
@@ -833,7 +850,7 @@ public class Breakout {
 	}
 
 	public static void setHighscore(){
-		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
+		File datei = new File("src\\main\\java\\game\\Highscore.txt");
 		String[] test = new String[3];
 		try{
 			FileWriter writer = new FileWriter(datei);
