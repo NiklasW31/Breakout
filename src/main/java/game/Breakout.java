@@ -635,9 +635,9 @@ public class Breakout {
 			blocks[63] = new Block(86, 17, spielfeld, Block.Typ.typ1);
 		}
 		if(selectlevel.equals(KeyType.F3)){
-			blocks = new Block[1];
+			blocks = new Block[64];
 			blocks[0] = new Block(2, 3, spielfeld, Block.Typ.typ2);
-			/*
+
 			blocks[1] = new Block(14, 3, spielfeld , Block.Typ.typ2);
 			blocks[2] = new Block(26, 3, spielfeld, Block.Typ.typ2);
 			blocks[3] = new Block(38, 3, spielfeld, Block.Typ.typ2);
@@ -708,7 +708,7 @@ public class Breakout {
 			blocks[61] = new Block(62, 17, spielfeld, Block.Typ.typ1);
 			blocks[62] = new Block(74, 17, spielfeld, Block.Typ.typ3);
 			blocks[63] = new Block(86, 17, spielfeld, Block.Typ.typ3);
-			*/
+
 
 		}
 
