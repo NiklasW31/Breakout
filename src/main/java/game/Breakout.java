@@ -407,13 +407,13 @@ public class Breakout {
 
 		if(Ball.stuezVektorY == spielfeldHoehe - 1){
 			Player.leben--;
-			Player.x = 42;
+			Player.x = 45;
 			Ball.stuezVektorX = Player.x + Player.groese / 2 + 1;
 			Ball.stuezVektorY = 20;
 			Ball.richtungsVektorY = 1;
 			Ball.richtungsVektorX = 0;
 			draw();
-			//sleep2Sec();
+			sleep2Sec();
 		}
 	}
 	//Ball beruert einen Block
@@ -480,9 +480,6 @@ public class Breakout {
 		Ball.richtungsVektorX = Ball.richtungsVektorX * -1;
 	}
 
-	private static void filereader(){
-		File data = new File("Highscore.txt");
-	}
 
 	private static void createLevel(){
 		if(selectlevel.equals(KeyType.F1)){
@@ -793,7 +790,7 @@ public class Breakout {
 	}
 
 	public static void getHighscore(){
-		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
+		File datei = new File("src\\main\\java\\game\\Highscore.txt");
 		Scanner scan = null;
 		strArray[0] = "";
 		strArray[1] = "";
@@ -833,7 +830,7 @@ public class Breakout {
 	}
 
 	public static void setHighscore(){
-		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
+		File datei = new File("src\\main\\java\\game\\Highscore.txt");
 		String[] test = new String[3];
 		try{
 			FileWriter writer = new FileWriter(datei);
