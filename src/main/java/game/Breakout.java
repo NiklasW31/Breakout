@@ -30,15 +30,18 @@ public class Breakout {
 	public static TextColor DefaultTextColor = TextColor.ANSI.WHITE;
 	public static boolean gamesOn = true;
 	public static KeyType selectlevel;
-	public static int level;
 	public static Block[] blocks;
 	public static boolean levelStart = true;
 	public static HashMap<Integer, String> blockHM = new HashMap<Integer, String>();
 	public static int localHighscore;
 	public static String localName;
+	public static String strgAll = "";
+	public static int level;
 
 
 	public static void main(String[] args) throws IOException {
+
+		getHighscore();
 
 		// Spielfeld mit "Pixeln" wird angelegt
 		// jedes Pixel kann einen char, eine Hintergrundfarbe und eine Textfarbe haben
@@ -150,7 +153,7 @@ public class Breakout {
 						
 						// wenn der Spielfeld verlassen wird, dann ...
 						if (Player.x > 2) {
-							Player.x --;
+							Player.x -= 2;
 						}
 
 
@@ -161,7 +164,7 @@ public class Breakout {
 
 
 						if (Player.x + Player.groese < spielfeldBreite - 2) {
-							Player.x ++;
+							Player.x += 2;
 						}
 
 				}
@@ -215,6 +218,8 @@ public class Breakout {
 		Write("Drücke F1, um das Spiel zu starten.", terminal);
 		terminal.setCursorPosition(6, 16);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
+		terminal.setCursorPosition(6,17 );
+		Write(strgAll, terminal);
 
 		// Texte im Terminal anzeigen
 		terminal.flush();
@@ -645,6 +650,7 @@ public class Breakout {
 		terminal.setCursorPosition(6, 16);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
 
+
 		String username = "";
 
 		while(true) {
@@ -685,43 +691,53 @@ public class Breakout {
 			Thread.currentThread().interrupt();
 		}
 	}
-	public static void changeHighscore(){
 
-		String strgAll = null;
-		String higscoreString = Integer.toString(Player.highscore);
-		String[] splitLevel;
-		String[] splithigscore;
+	public static void getHighscore(){
 
-		File data = new File("highscore.txt");
-		Scanner scanner = null;
 
+		String[] splitlevel = new String[2];
+		String split;
+		String[] splitscore;
+
+		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
+		Scanner scan = null;
 		try{
-			scanner = new Scanner(data);
-			while (scanner.hasNext()){
-				strgAll = scanner.nextLine();
+
+			scan = new Scanner(datei);
+			while (scan.hasNext()){
+				strgAll += scan.nextLine();
 			}
+
 		}catch(FileNotFoundException e){
 			System.out.println("File not found");
 		}
-		splitLevel = strgAll.split("\n", 3);
+
+
+		splitlevel = strgAll.split("\n", 3);
+
 		switch (level){
 			case 1:
-				splithigscore = splitLevel[0].split(" ");
-				localName = splithigscore[0];
-				localHighscore =  Integer.parseInt(splithigscore[1]);
+				split = splitlevel[0];
+				splitscore = split.split(" ");
+				localName = splitscore[0];
+				localHighscore = Integer.parseInt(splitscore[1]);
 				break;
 			case 2:
-				splithigscore = splitLevel[1].split(" ");
-				localName = splithigscore[0];
-				localHighscore =  Integer.parseInt(splithigscore[1]);
+				split = splitlevel[1];
+				splitscore = split.split(" ");
+				localName = splitscore[0];
+				localHighscore = Integer.parseInt(splitscore[1]);
 				break;
 			case 3:
-				splithigscore = splitLevel[2].split(" ");
-				localName = splithigscore[0];
-				localHighscore =  Integer.parseInt(splithigscore[1]);
+				split = splitlevel[2];
+				splitscore = split.split(" ");
+				localName = splitscore[0];
+				localHighscore = Integer.parseInt(splitscore[1]);
 				break;
 		}
-	}
 
+		//localName = split[0];
+		//localHighscore =  Integer.parseInt(split[1]);
+	}
 
 }

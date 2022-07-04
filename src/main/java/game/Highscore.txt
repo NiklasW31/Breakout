@@ -1,3 +1,3 @@
 uzu 2000
-hello 3000
-BitteGeh 100
+lala 1000
+lolo 200
