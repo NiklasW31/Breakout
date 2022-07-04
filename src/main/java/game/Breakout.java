@@ -1,9 +1,7 @@
 package game;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.Buffer;
 import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -215,11 +213,13 @@ public class Breakout {
 		terminal.setCursorPosition(6, 14);
 		Write("Willkommen im Spiel", terminal); // Text schreiben
 		terminal.setCursorPosition(6, 15);
-		Write("Drücke F1, um das Spiel zu starten.", terminal);
+		Write("Drücke F1, um das erste Level zu Spielen.", terminal);
 		terminal.setCursorPosition(6, 16);
+		Write("Drücke F2, um das zweite Level zu Spielen.", terminal);
+		terminal.setCursorPosition(6, 17);
+		Write("Drücke F3, um das dritte Level zu Spielen.", terminal);
+		terminal.setCursorPosition(6, 18);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
-		terminal.setCursorPosition(6,17 );
-		Write(strgAll, terminal);
 
 		// Texte im Terminal anzeigen
 		terminal.flush();
@@ -253,16 +253,25 @@ public class Breakout {
 
 				if(eingabe.getKeyType().equals(KeyType.F1)) {
 					selectlevel = KeyType.F1;
+					Player.highscore = 0;
+					Player.leben = 3;
 					level = 1;
+					gamesOn = true;
 					 break ;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F2)){
 					selectlevel = KeyType.F2;
+					Player.highscore = 0;
+					Player.leben = 3;
+					gamesOn = true;
 					level = 2;
 					break;
 				}
 				if(eingabe.getKeyType().equals(KeyType.F3)){
 					selectlevel = KeyType.F3;
+					Player.highscore = 0;
+					Player.leben = 3;
+					gamesOn = true;
 					level = 3;
 					break;
 				}
@@ -405,14 +414,14 @@ public class Breakout {
 		for(int i = 0;i < levelBlock;i++ ){
 			for(int j = 0;j < blocksLength;j++) {
 				if(Ball.stuezVektorY >= 0){
-					if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY-1 && blocks[i].visibility == true) {
+					if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY-1 && blocks[i].visibility) {
 						System.out.println("hit");
 						blocks[i].hits--;
 						Player.highscore = Player.highscore+((i+1)*15);
 						System.out.println(blocks[i].hits);
 						Ball.richtungsVektorY = Ball.richtungsVektorY *-1;
 				}else if(Ball.stuezVektorY <= 0){
-						if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY+1 && blocks[i].visibility == true) {
+						if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY+1 && blocks[i].visibility) {
 							System.out.println("hit");
 							blocks[i].hits--;
 							Player.highscore = Player.highscore + ((i + 1) * 150);
@@ -647,8 +656,27 @@ public class Breakout {
 		Write("Game Over", terminal); // Text schreiben
 		terminal.setCursorPosition(6,15);
 		Write("Du hast " + Player.highscore + " Punkte gesammelt.", terminal);
+		terminal.setCursorPosition(6, 15);
+		Write("Drücke F1, um das erste Level zu Spielen.", terminal);
 		terminal.setCursorPosition(6, 16);
+		Write("Drücke F2, um das zweite Level zu Spielen.", terminal);
+		terminal.setCursorPosition(6, 17);
+		Write("Drücke F3, um das dritte Level zu Spielen.", terminal);
+		terminal.setCursorPosition(6, 18);
 		Write("Drücke ESCAPE, um das Spiel zu verlassen.", terminal);
+
+		//test
+		FileReader filereader = new FileReader("src/main/java/game/Highscore.txt");
+		BufferedReader bufferedreader = new BufferedReader(filereader);
+		String level1 = bufferedreader.readLine();
+		terminal.setCursorPosition(6,40);
+		Write("High Score Level 1: " + level1,terminal);
+		String level2 = bufferedreader.readLine();
+		terminal.setCursorPosition(6,41);
+		Write("High Score Level 2: " + level2,terminal);
+		String level3 = bufferedreader.readLine();
+		terminal.setCursorPosition(6,42);
+		Write("High Score Level 3: " + level3,terminal);
 
 
 		String username = "";
@@ -699,7 +727,7 @@ public class Breakout {
 		String split;
 		String[] splitscore;
 
-		File datei = new File("E:\\Studium\\Sem1+\\Breakout\\src\\main\\java\\game\\Highscore.txt");
+		File datei = new File("src/main/java/game/Highscore.txt");
 		Scanner scan = null;
 		try{
 
