@@ -764,9 +764,8 @@ public class Breakout {
 		Write("Highscore Level 3: "+ strArray[2], terminal);
 
 
-		if(localHighscore < Player.highscore) {
+		if(localHighscore < highscore) {
 			while (true) {
-				terminal.clearScreen();
 				KeyStroke keyStroke = terminal.pollInput();
 				terminal.setCursorPosition(9, 20);
 				Write("Gebe einen Namen ein: " + username + "\n", terminal);
@@ -775,10 +774,7 @@ public class Breakout {
 					keyStroke = terminal.readInput();
 				}
 				if (keyStroke.getKeyType() == KeyType.Enter) {
-					//in Txt schreiben
 					setHighscore();
-					showGameOver(terminal);
-					terminal.flush();
 					break;
 				}
 				try {
