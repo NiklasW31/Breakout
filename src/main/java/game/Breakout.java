@@ -110,7 +110,7 @@ public class Breakout {
 			gameOver();
 			levelCleared();
 
-			spielfeld[42][41].backColor = Indexed.fromRGB(144, 44, 22);
+			//spielfeld[42][41].backColor = Indexed.fromRGB(144, 44, 22);
 
 			// Hintergrundfarbe mit RGB (ACHTUNG 6x6x6 Color Cube)
 			// siehe TextColor Klasse in Lanterna
@@ -436,14 +436,14 @@ public class Breakout {
 		for(int i = 0;i < levelBlock;i++ ){
 			for(int j = 0;j < blocksLength;j++) {
 				if(Ball.stuezVektorY >= 0){
-					if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY-1 && blocks[i].visibility == true) {
+					if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY-1 && blocks[i].visibility) {
 						System.out.println("hit");
 						blocks[i].hits--;
 						Player.highscore = Player.highscore+((i+1)*15);
 						System.out.println(blocks[i].hits);
 						Ball.richtungsVektorY = Ball.richtungsVektorY *-1;
 				}else if(Ball.stuezVektorY <= 0){
-						if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY+1 && blocks[i].visibility == true) {
+						if (blocks[i].x+j == Ball.stuezVektorX && blocks[i].y == Ball.stuezVektorY+1 && blocks[i].visibility) {
 							System.out.println("hit");
 							blocks[i].hits--;
 							Player.highscore = Player.highscore + ((i + 1) * 150);
